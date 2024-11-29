@@ -1,0 +1,122 @@
+.monthly-spending {
+    width: 100%;
+    height: 400px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container {
+    position: relative;
+    display: flex;
+    height: 350px;
+    padding-bottom: 30px;
+}
+
+.y-axis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 20px;
+    height: 300px;
+}
+
+.y-label {
+    color: #666;
+    font-size: 0.8rem;
+}
+
+.bars-container {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-left: 20px;
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.bar-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px;
+}
+
+.bar {
+    width: 30px;
+    background: linear-gradient(to top, #3498db, #2980b9);
+    border-radius: 4px 4px 0 0;
+    transition: all 0.3s ease;
+}
+
+.bar-wrapper:hover .bar {
+    background: linear-gradient(to top, #2ecc71, #27ae60);
+    width: 35px;
+}
+
+.x-label {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.hover-details {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    min-width: 200px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.hover-details h4 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .monthly-spending {
+        padding: 10px;
+    }
+
+    .bar-wrapper {
+        width: 30px;
+    }
+
+    .bar {
+        width: 20px;
+    }
+
+    .bar-wrapper:hover .bar {
+        width: 25px;
+    }
+
+    .x-label {
+        font-size: 0.7rem;
+        transform: rotate(-45deg);
+    }
+
+    .hover-details {
+        min-width: 150px;
+    }
+} 

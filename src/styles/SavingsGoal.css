@@ -1,0 +1,73 @@
+.savings-section {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.savings-section h3 {
+    font-size: 1.2rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.savings-container {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.savings-goal {
+    width: 100%;
+}
+
+.goal-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.goal-name {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.goal-amounts {
+    color: #7f8c8d;
+    font-size: 0.9em;
+}
+
+.goal-progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #ecf0f1;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.goal-progress {
+    height: 100%;
+    background-color: #27ae60; /* Groen voor spaardoelen */
+    transition: width 0.3s ease;
+    border-radius: 5px;
+}
+
+/* Hover effect */
+.savings-goal:hover .goal-progress {
+    opacity: 0.8;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .savings-container {
+        padding: 15px;
+    }
+
+    .goal-header {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .goal-amounts {
+        font-size: 0.8em;
+    }
+}

@@ -1,0 +1,63 @@
+.barchart {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+.category-container {
+    width: 100%;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.category-name {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.category-amounts {
+    color: #7f8c8d;
+    font-size: 0.9em;
+}
+
+.bar-container {
+    width: 100%;
+    height: 10px;
+    background-color: #ecf0f1;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.bar {
+    height: 100%;
+    transition: width 0.3s ease;
+    border-radius: 5px;
+}
+
+/* Hover effect */
+.category-container:hover .bar {
+    opacity: 0.8;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .barchart {
+        padding: 15px;
+    }
+
+    .category-header {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .category-amounts {
+        font-size: 0.8em;
+    }
+} 
