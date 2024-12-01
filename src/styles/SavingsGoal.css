@@ -71,3 +71,50 @@
         font-size: 0.8em;
     }
 }
+
+.goal-container {
+    position: relative;
+    margin-top: 1rem;
+}
+
+.goal-info {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.goal-text {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.goal-details {
+    position: absolute;
+    bottom: calc(100% + 5px);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2c3e50;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.goal-details::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: #2c3e50 transparent transparent transparent;
+}
+
+.goal-container:hover .goal-progress-bar {
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}

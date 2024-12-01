@@ -1,0 +1,190 @@
+.budget-calculator {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.calculator-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+.calculator-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.calculator-header h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.calculator-header p {
+    color: #7f8c8d;
+}
+
+.monthly-income-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.monthly-income-section h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.monthly-income-section .budget-input {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.budget-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.budget-category {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.budget-category h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.budget-input {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.budget-input span {
+    color: #7f8c8d;
+    margin-right: 10px;
+}
+
+.budget-input input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 1.1rem;
+    color: #2c3e50;
+}
+
+.category-tip {
+    font-size: 0.9rem;
+    color: #95a5a6;
+}
+
+.total-budget-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 30px 0;
+    text-align: center;
+}
+
+.total-budget-section h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.total-amount {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin: 15px 0;
+}
+
+.budget-status {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.cancel-button, .save-button {
+    padding: 12px 24px;
+    border-radius: 4px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cancel-button {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.save-button {
+    background-color: #3498db;
+    color: white;
+}
+
+.cancel-button:hover {
+    background-color: #7f8c8d;
+}
+
+.save-button:hover {
+    background-color: #2980b9;
+}
+
+@media (max-width: 768px) {
+    .budget-calculator {
+        margin: 20px auto;
+    }
+
+    .calculator-container {
+        padding: 20px;
+    }
+
+    .budget-categories {
+        grid-template-columns: 1fr;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .cancel-button, .save-button {
+        width: 100%;
+    }
+}
+
+.warning {
+    color: #e74c3c;
+    font-weight: 500;
+}
+
+.total-amount {
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+/* Voeg deze kleurverandering toe wanneer over budget */
+.total-amount.over-budget {
+    color: #e74c3c;
+}

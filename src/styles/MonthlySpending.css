@@ -11,20 +11,22 @@
     position: relative;
     display: flex;
     height: 350px;
-    padding-bottom: 30px;
+    padding-bottom: 40px;
 }
 
 .y-axis {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     justify-content: space-between;
     padding-right: 20px;
     height: 300px;
+    border-right: 1px solid #ddd;
 }
 
 .y-label {
     color: #666;
     font-size: 0.8rem;
+    transform: translateY(50%);
 }
 
 .bars-container {
@@ -33,34 +35,55 @@
     justify-content: space-between;
     align-items: flex-end;
     padding-left: 20px;
-    border-left: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.bars-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20px;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        to top,
+        transparent,
+        transparent calc(25% - 1px),
+        #eee calc(25% - 1px),
+        #eee 25%
+    );
+    pointer-events: none;
 }
 
 .bar-wrapper {
-    position: relative;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 40px;
+    margin: 0 2px;
+    position: relative;
 }
 
 .bar {
-    width: 30px;
-    background: linear-gradient(to top, #3498db, #2980b9);
+    width: 90%;
     border-radius: 4px 4px 0 0;
     transition: all 0.3s ease;
 }
 
 .bar-wrapper:hover .bar {
-    background: linear-gradient(to top, #2ecc71, #27ae60);
-    width: 35px;
+    width: 95%;
 }
 
 .x-label {
-    margin-top: 10px;
+    position: absolute;
+    bottom: -30px;
     font-size: 0.8rem;
     color: #666;
+    transform: rotate(-45deg);
+    transform-origin: top left;
+    white-space: nowrap;
 }
 
 .hover-details {
