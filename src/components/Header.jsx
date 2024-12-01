@@ -1,53 +1,66 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { FaUserCircle } from 'react-icons/fa';
 import '../styles/Header.css';
 
 const Header = () => {
-  const { isLoggedIn, login, logout } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLoginClick = () => {
-    login();
-    navigate('/dashboard');
+    navigate('/login');
   };
 
   const handleLogoutClick = () => {
-    logout();
-    navigate('/');
+    try {
+      logout();
+      navigate('/');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
+  // Bepaal welke navigatie te tonen op basis van login status
+  const renderNavigation = () => {
+    if (isLoggedIn) {
+      return (
+        <ul className="nav-links">
+          <li><Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>Home</Link></li>
+          <li><Link to="/fire-calculator" className={location.pathname === '/fire-calculator' ? 'active' : ''}>FIRE Calculator</Link></li>
+          <li><Link to="/investments" className={location.pathname === '/investments' ? 'active' : ''}>Investeringstracker</Link></li>
+          <li><Link to="/goals" className={location.pathname === '/goals' ? 'active' : ''}>Financiële doelen</Link></li>
+          <li>
+            <button className="profile-button" onClick={handleLogoutClick}>
+              <FaUserCircle size={24} />
+            </button>
+          </li>
+        </ul>
+      );
+    } else {
+      return (
+        <ul className="nav-links">
+          <li><Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link></li>
+          <li><Link to="/features" className={location.pathname === '/features' ? 'active' : ''}>Features</Link></li>
+          <li><Link to="/pricing" className={location.pathname === '/pricing' ? 'active' : ''}>Pricing</Link></li>
+          <li>
+            <button className="login-button" onClick={handleLoginClick}>
+              Login
+            </button>
+          </li>
+        </ul>
+      );
+    }
   };
 
   return (
     <header>
       <div className="logo">
-        <Link to="/">FinancePro</Link>
+        <Link to={isLoggedIn ? '/dashboard' : '/'}>FinancePro</Link>
       </div>
       <nav>
-        {isLoggedIn ? (
-          <ul className="nav-links">
-            <li><Link to="/dashboard">Home</Link></li>
-            <li><Link to="/fire-calculator">FIRE Calculator</Link></li>
-            <li><Link to="/investments">Investeringstracker</Link></li>
-            <li><Link to="/goals">Financiële doelen</Link></li>
-            <li>
-              <button className="profile-button" onClick={handleLogoutClick}>
-                <FaUserCircle size={24} />
-              </button>
-            </li>
-          </ul>
-        ) : (
-          <ul className="nav-links">
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/features">Features</Link></li>
-            <li><Link to="/pricing">Pricing</Link></li>
-            <li>
-              <button className="login-button" onClick={handleLoginClick}>
-                Login
-              </button>
-            </li>
-          </ul>
-        )}
+        {renderNavigation()}
       </nav>
     </header>
   );

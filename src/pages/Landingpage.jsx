@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/LandingPage.css";
+import LandingpageBanner from "../assets/LandingpageBanner.jpg";
 
 const Landingpage = () => {
     return (
@@ -19,7 +20,7 @@ const Landingpage = () => {
                     </div>
                 </div>
                 <div className="hero-image">
-                    <img src="/placeholder.svg" alt="FinancePro dashboard voorbeeld" />
+                    {/* <img src={LandingpageBanner} alt="FinancePro dashboard" /> */}
                 </div>
                 </section>
 
@@ -40,6 +41,14 @@ const Landingpage = () => {
                     <div className="feature-item">
                     <h3>Investeringstracking</h3>
                     <p>Houd al je investeringen bij op één plek en krijg inzicht in je portfolio prestaties.</p>
+                    </div>
+                    <div className="feature-item">
+                    <h3>Financiële doelen</h3>
+                    <p>Stel persoonlijke financiële doelen en volg je voortgang met onze intuïtieve dashboards.</p>
+                    </div>
+                    <div className="feature-item">
+                    <h3>Financiële doelen</h3>
+                    <p>Stel persoonlijke financiële doelen en volg je voortgang met onze intuïtieve dashboards.</p>
                     </div>
                     <div className="feature-item">
                     <h3>Financiële doelen</h3>

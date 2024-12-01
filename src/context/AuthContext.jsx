@@ -1,65 +1,53 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { 
+    auth,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    GoogleAuthProvider,
+    signOut
+} from '../firebase-config';
 
-const AuthContext = createContext(null);
+const AuthContext = createContext();
+
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return localStorage.getItem('isLoggedIn') === 'true';
-  });
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-  // Dummy user data voor testing
-  const [user, setUser] = useState({
-    saldo: 1500,
-    inkomsten: 2500,
-    uitgaven: 1000,
-    budget: 2000,
-    spaardoelItem: "Nieuwe Auto",
-    spaardoelBedrag: 5000,
-    spaardoelBedragTotaal: 15000,
-    recentUitgaven: [
-      { id: 1, datum: "2024-01-15", naam: "Boodschappen", bedrag: -75.50 },
-      { id: 2, datum: "2024-01-14", naam: "Salaris", bedrag: 2500 },
-      { id: 3, datum: "2024-01-13", naam: "Benzine", bedrag: -60.00 },
-    ],
-    categories: [
-        {
-            name: 'Huisvesting',
-            current: 800,
-            budget: 1000,
-        },
-        {
-            name: 'Boodschappen',
-            current: 350,
-            budget: 400,
-        },
-        {
-            name: 'Transport',
-            current: 150,
-            budget: 200,
-        },
-        {
-            name: 'Entertainment',
-            current: 120,
-            budget: 150,
-        }
-    ]
-  });
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            setUser(user);
+            setLoading(false);
+        });
 
-  const login = () => {
-    setIsLoggedIn(true);
-    localStorage.setItem('isLoggedIn', 'true');
-  };
+        return unsubscribe;
+    }, []);
 
-  const logout = () => {
-    setIsLoggedIn(false);
-    localStorage.setItem('isLoggedIn', 'false');
-  };
+    const login = (email, password) => {
+        return signInWithEmailAndPassword(auth, email, password);
+    };
 
-  return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, user }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+    const loginWithGoogle = async () => {
+        const provider = new GoogleAuthProvider();
+        return signInWithPopup(auth, provider);
+    };
 
-export const useAuth = () => useContext(AuthContext); 
+    const logout = () => {
+        return signOut(auth);
+    };
+
+    const value = {
+        user,
+        login,
+        loginWithGoogle,
+        logout,
+        isLoggedIn: !!user
+    };
+
+    return (
+        <AuthContext.Provider value={value}>
+            {!loading && children}
+        </AuthContext.Provider>
+    );
+}; 

@@ -50,29 +50,52 @@
   /* Hero sectie stijlen */
   .hero {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 60px 0;
+    justify-content: space-between;
+    padding: 80px 120px;
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(46, 204, 113, 0.1));
+    clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
   }
   
   .hero-content {
-    flex: 1;
-    padding-right: 40px;
+    max-width: 600px;
+    z-index: 1;
   }
   
-  .hero h1 {
-    font-size: 48px;
-    margin-bottom: 20px;
+  .hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #1a202c;
+    line-height: 1.2;
+    margin-bottom: 24px;
+    background: linear-gradient(90deg, #2c3e50, #3498db);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
   
-  .hero p {
-    font-size: 18px;
-    margin-bottom: 30px;
+  .hero-content p {
+    font-size: 1.25rem;
+    color: #4a5568;
+    line-height: 1.6;
+    margin-bottom: 32px;
   }
   
   .cta-buttons {
     display: flex;
-    gap: 20px;
+    gap: 16px;
   }
   
   .hero-image {
@@ -86,74 +109,120 @@
   
   /* Features sectie stijlen */
   .features {
-    padding: 60px 0;
-    text-align: center;
+    padding: 100px 120px;
+    background: white;
   }
   
   .features h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 16px;
   }
   
   .features > p {
-    font-size: 18px;
-    max-width: 600px;
-    margin: 0 auto 40px;
+    text-align: center;
+    color: #4a5568;
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto 64px;
   }
   
   .feature-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
   }
   
   .feature-item {
-    background-color: #f9f9f9;
-    padding: 30px;
-    border-radius: 5px;
-    text-align: left;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .feature-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 40px;
+    background: linear-gradient(180deg, #3498db, #2ecc71);
+    border-radius: 0 2px 2px 0;
   }
   
   .feature-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
   }
   
   .feature-item h3 {
-    font-size: 24px;
-    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #2d3748;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  
+  .feature-item p {
+    color: #4a5568;
+    line-height: 1.6;
   }
   
   /* Responsive design */
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     .hero {
+      padding: 60px 40px;
       flex-direction: column;
+      text-align: center;
     }
   
     .hero-content {
-      padding-right: 0;
       margin-bottom: 40px;
     }
   
-    .feature-grid {
-      grid-template-columns: 1fr;
-      padding: 0 15px;
+    .hero-content h1 {
+      font-size: 2.8rem;
     }
   
-    .feature-item {
-      margin-bottom: 20px;
+    .cta-buttons {
+      justify-content: center;
+    }
+  
+    .features {
+      padding: 60px 40px;
+    }
+  
+    .features h2 {
+      font-size: 2rem;
     }
   }
   
-  @media (min-width: 769px) and (max-width: 1024px) {
+  @media (max-width: 640px) {
+    .hero {
+      padding: 40px 20px;
+    }
+  
+    .hero-content h1 {
+      font-size: 2.2rem;
+    }
+  
+    .cta-buttons {
+      flex-direction: column;
+    }
+  
+    .features {
+      padding: 40px 20px;
+    }
+  
     .feature-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      padding: 0 30px;
+      gap: 24px;
     }
   }
   
