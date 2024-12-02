@@ -7,7 +7,7 @@
 - Firebase security regels voor database (KAN LATER)
 
 *** API's ***
-- DEGIRO API voor bankconnectie (TODO)
+- UITVOGELEN HOE IK BELEGGINGEN DOE
 - Salt Edge API voor bankconnectie (In afwachting)
 - Kadaster API voor WOZ waarde (TODO)
 - RDW API voor voertuigwaarde (TODO)
@@ -15,6 +15,7 @@
 
 *** NEXT ***
 - Vermogensoverzicht
+- Beleggingen; dit moet ik nog researchen 
 - Spaargeld; dit wordt verkregen door Salt Edge API
 - Vastgoed; WOZ waarde wordt verkregen door de API van Kadaster(?) of via een andere API
 - Voertuigen; waarde wordt verkregen door de API van RDW (zie www.rdw.nl)
