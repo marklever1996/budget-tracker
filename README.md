@@ -1,90 +1,38 @@
-*** FRONTEND TODO***
-- Register pagina (KAN LATER)
-- Reset password pagina (KAN LATER)
-- Budgetoverzicht pagina
-- FIRE Overzicht pagina
+Wat hoort in elke map?
+src/assets/
+Bevat:
 
-*** BACKEND ***
-- Firebase database voor opslag van gebruikersgegevens (KAN LATER)
-- Firebase security regels voor database (KAN LATER)
+Afbeeldingen: Logo’s, iconen, achtergrondbeelden.
+Fonts: Specifieke lettertypen indien nodig.
+src/components/
+Hier komen herbruikbare componenten zoals:
 
-*** API's ***
-- DEGIRO API voor bankconnectie (TODO) -->DEGIRO biedt geen API aan, alternatief is SAXO Bank API
-- Salt Edge API voor bankconnectie (In afwachting van API)
-- Kadaster API voor WOZ waarde (In afwachting van API)
-- RDW API voor voertuigwaarde (Werkt; maar is niet 100% nauwkeurig)
-- Coinmerce API voor crypto waarde (TODO)
+Header.jsx: Navigatiebalk of koptekst.
+TransactionForm.jsx: Formulier om inkomsten/uitgaven toe te voegen.
+TransactionList.jsx: Weergave van alle transacties.
+Chart.jsx: Grafiekcomponent met Chart.js of react-chartjs-2.
+src/context/
+Bevat bestanden voor state management:
 
-*** NEXT ***
+BudgetContext.jsx: Context en reducer voor transacties.
+src/hooks/
+Opslag voor aangepaste hooks, bijvoorbeeld:
 
-    *** Vermogensoverzicht (= Home pagina) ***
-    - Spaargeld; dit wordt verkregen door Salt Edge API
-    - Vastgoed; WOZ waarde wordt verkregen door de API van Kadaster
-    - Voertuigen; waarde wordt verkregen door de API van RDW (werkt; maar is niet 100% nauwkeurig)
-    - Crypto; waarde wordt verkregen door de API van Coinmerce
-    - Overig; dit moet handmatig worden ingevoerd
+useLocalStorage.js: Om gegevens op te slaan in localStorage.
+useCalculateFire.js: Voor FIRE-berekeningen.
+src/pages/
+Hier komen pagina-componenten, bijvoorbeeld:
 
-*** IDEEEN ***
-- Deelbaar dashboard voor partners (KAN LATER)
-- AI voor categoriseren van transacties (KAN LATER)
-- AI voor suggesties voor financiële doelen (KAN LATER)
-- AI feedback op transacties (KAN LATER)
+Dashboard.jsx: Hoofdpagina voor transactiebeheer.
+FireCalculator.jsx: Voor de FIRE-functionaliteit.
+SavingsTips.jsx: Bespaarsuggesties.
+src/styles/
+Bevat:
 
+Global.css: Globale stijlen.
+Component-specifieke CSS: Bijvoorbeeld TransactionForm.css.
+src/utils/
+Helper-functies zoals:
 
-
---------------------------------STRUCTURE--------------------------------
-src/
-├── components/
-│   ├── layout/
-│   │   ├── Header.jsx
-│   │   └── Footer.jsx
-│   │
-│   ├── common/
-│   │   ├── CategoryCard/
-│   │   │   ├── index.jsx
-│   │   │   └── styles.css
-│   │   └── DeGiroBanner/
-│   │       ├── index.jsx
-│   │       └── styles.css
-│   │
-│   └── categories/
-│       ├── Investments/
-│       │   ├── index.jsx
-│       │   ├── styles.css
-│       │   └── components/
-│       │       └── DeGiroLink.jsx
-│       │
-│       ├── Vehicles/
-│       │   ├── index.jsx
-│       │   ├── styles.css
-│       │   ├── hooks/
-│       │   │   └── useVehicles.js
-│       │   └── components/
-│       │       └── VehicleModal.jsx
-│       │
-│       ├── RealEstate/
-│       │   ├── index.jsx
-│       │   └── styles.css
-│       │
-│       ├── Savings/
-│       │   ├── index.jsx
-│       │   └── styles.css
-│       │
-│       └── Crypto/
-│           ├── index.jsx
-│           └── styles.css
-│
-├── pages/
-│   └── Investments/
-│       ├── index.jsx
-│       └── styles.css
-│
-├── hooks/
-│   └── usePortfolio.js
-│
-├── services/
-│   ├── vehicleService.js
-│   └── wozService.js
-│
-└── context/
-    └── AuthContext.jsx
+calculateSavings.js: Voor het berekenen van hoeveel een gebruiker kan besparen.
+formatCurrency.js: Om bedragen op te maken (bijv. €1.234,56).
