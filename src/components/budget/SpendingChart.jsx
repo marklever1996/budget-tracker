@@ -1,7 +1,7 @@
 import React from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useBudget } from '../context/BudgetContext';
-import '../styles/SpendingChart.css';
+import { useAuth } from '../../context/AuthContext';
+import { useBudget } from '../../context/BudgetContext';
+import './SpendingChart.css';
 
 // TODO:
 // import { saltEdgeService } from '../services/saltEdgeService';

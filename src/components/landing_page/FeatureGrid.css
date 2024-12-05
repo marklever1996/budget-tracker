@@ -1,0 +1,212 @@
+.features-section {
+    padding: 6rem 1.25rem;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+}
+
+.features-section::before,
+.features-section::after {
+    content: '';
+    position: absolute;
+    width: 1000px;
+    height: 1000px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.02), rgba(74, 222, 128, 0.02));
+    z-index: 0;
+}
+
+.features-section::before {
+    top: -400px;
+    right: -200px;
+}
+
+.features-section::after {
+    bottom: -400px;
+    left: -200px;
+    background: linear-gradient(135deg, rgba(74, 222, 128, 0.03), rgba(59, 130, 246, 0.03));
+}
+
+.features-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.features-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1.25rem;
+}
+
+.features-description {
+    text-align: center;
+    color: #6b7280;
+    font-size: 1.125rem;
+    max-width: 36rem;
+    margin: 0 auto 4rem auto;
+    line-height: 1.6;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    padding: 0.5rem;
+}
+
+.feature-card {
+    background: #ffffff;
+    padding: 2.5rem;
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02),
+                0 12px 16px rgba(0, 0, 0, 0.02);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(59, 130, 246, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.05),
+                0 16px 24px rgba(0, 0, 0, 0.05);
+    border-color: rgba(59, 130, 246, 0.2);
+}
+
+.feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
+    margin-bottom: 1.5rem;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.feature-icon-svg {
+    width: 1.75rem;
+    height: 1.75rem;
+    color: white;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.feature-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.feature-description {
+    color: #6b7280;
+    line-height: 1.7;
+    font-size: 1.0625rem;
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+    .features-section {
+        padding: 5rem 1.25rem;
+    }
+
+    .features-title {
+        font-size: 2.25rem;
+    }
+
+    .features-grid {
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .features-section {
+        padding: 4rem 1rem;
+    }
+
+    .features-title {
+        font-size: 2rem;
+    }
+
+    .features-description {
+        font-size: 1rem;
+        margin-bottom: 3rem;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .feature-card {
+        padding: 2rem;
+    }
+
+    .feature-icon {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .feature-icon-svg {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .features-section {
+        background: #0f172a;
+    }
+
+    .features-section::before,
+    .features-section::after {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(74, 222, 128, 0.05));
+        opacity: 0.1;
+    }
+
+    .feature-card {
+        background: #1e293b;
+        border-color: rgba(59, 130, 246, 0.2);
+    }
+
+    .feature-title {
+        color: #f1f5f9;
+    }
+
+    .feature-description {
+        color: #94a3b8;
+    }
+
+    .features-description {
+        color: #cbd5e1;
+    }
+
+    .feature-icon {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    }
+} 

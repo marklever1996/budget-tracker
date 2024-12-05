@@ -27,10 +27,9 @@ const Header = () => {
     if (isLoggedIn) {
       return (
         <ul className="nav-links">
-          <li><Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>Home</Link></li>
-          <li><Link to="/fire-calculator" className={location.pathname === '/fire-calculator' ? 'active' : ''}>FIRE Calculator</Link></li>
-          <li><Link to="/investments" className={location.pathname === '/investments' ? 'active' : ''}>Investeringstracker</Link></li>
-          <li><Link to="/goals" className={location.pathname === '/goals' ? 'active' : ''}>Financiële doelen</Link></li>
+          <li><Link to="/investments" className={location.pathname === '/investments' ? 'active' : ''}>Home</Link></li>
+          <li><Link to="/budget" className={location.pathname === '/budget' ? 'active' : ''}>Budgetoverzicht</Link></li>
+          <li><Link to="/budget-calculator" className={location.pathname === '/budget-calculator' ? 'active' : ''}>Maandelijkse uitgaves</Link></li>
           <li>
             <button className="profile-button" onClick={handleLogoutClick}>
               <FaUserCircle size={24} />
@@ -43,7 +42,7 @@ const Header = () => {
         <ul className="nav-links">
           <li><Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link></li>
           <li><Link to="/features" className={location.pathname === '/features' ? 'active' : ''}>Features</Link></li>
-          <li><Link to="/pricing" className={location.pathname === '/pricing' ? 'active' : ''}>Pricing</Link></li>
+          {/* <li><Link to="/pricing" className={location.pathname === '/pricing' ? 'active' : ''}>Pricing</Link></li> */}
           <li>
             <button className="login-button" onClick={handleLoginClick}>
               Login
@@ -57,7 +56,7 @@ const Header = () => {
   return (
     <header>
       <div className="logo">
-        <Link to={isLoggedIn ? '/dashboard' : '/'}>FinancePro</Link>
+        <Link to={isLoggedIn ? '/investments' : '/'}>FinancePro</Link>
       </div>
       <nav>
         {renderNavigation()}

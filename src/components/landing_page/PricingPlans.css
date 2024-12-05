@@ -1,0 +1,150 @@
+.pricing-section {
+    padding: 3rem 1.25rem;
+    background-color: white;
+    margin: 0;
+}
+
+.pricing-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.pricing-title {
+    text-align: center;
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 1rem;
+}
+
+.pricing-description {
+    text-align: center;
+    color: #6b7280;
+    font-size: 1.125rem;
+    max-width: 36rem;
+    margin: 0 auto 3rem auto;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.pricing-card {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    border: 2px solid #e5e7eb;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pricing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.pricing-card.popular {
+    border-color: #3b82f6;
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
+}
+
+.popular-badge {
+    position: absolute;
+    top: 0;
+    right: 2rem;
+    transform: translateY(-50%);
+    background: linear-gradient(135deg, #3b82f6, #4ade80);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.plan-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 1rem;
+}
+
+.plan-price {
+    margin-bottom: 2rem;
+}
+
+.price {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.period {
+    color: #6b7280;
+    font-size: 1.125rem;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #4b5563;
+    margin-bottom: 0.75rem;
+}
+
+.check-icon {
+    color: #3b82f6;
+    flex-shrink: 0;
+}
+
+.plan-button {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 2px solid #3b82f6;
+    background-color: transparent;
+    color: #3b82f6;
+}
+
+.plan-button:hover {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.plan-button.popular {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.plan-button.popular:hover {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+@media (max-width: 768px) {
+    .pricing-title {
+        font-size: 1.875rem;
+    }
+
+    .pricing-description {
+        font-size: 1rem;
+    }
+
+    .pricing-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pricing-card {
+        padding: 1.5rem;
+    }
+} 

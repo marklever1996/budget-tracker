@@ -1,0 +1,226 @@
+/* Hero sectie stijlen */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 80px 120px;
+    height: 100vh;
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(46, 204, 113, 0.1));
+    clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
+  
+  .hero-content {
+    max-width: 600px;
+    z-index: 1;
+  }
+  
+  .hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #1a202c;
+    line-height: 1.2;
+    margin-bottom: 24px;
+    background: linear-gradient(90deg, #2c3e50, #3498db);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .hero-content p {
+    font-size: 1.25rem;
+    color: #4a5568;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+  
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .hero-image {
+    flex: 1;
+  }
+  
+  .hero-image img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-description {
+        font-size: 1rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .primary-button,
+    .secondary-button {
+        width: 100%;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+.bounce {
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Button styles */
+.btn {
+    font-size: 1.125rem;
+    font-weight: 600;
+    padding: 0.875rem 2rem;
+    border-radius: 9999px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    outline: none;
+    border: 2px solid transparent;
+}
+
+/* Primary button */
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3);
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+/* Link button */
+.btn-link {
+    background: transparent;
+    color: #3b82f6;
+    border: 2px solid #3b82f6;
+    padding: calc(0.875rem - 2px) calc(2rem - 2px); /* Compensate for border */
+}
+
+.btn-link:hover {
+    background: rgba(59, 130, 246, 0.1);
+    transform: translateY(-2px);
+}
+
+.btn-link:active {
+    transform: translateY(0);
+}
+
+/* Button container */
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Disabled state */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Loading state */
+.btn.loading {
+    position: relative;
+    color: transparent;
+}
+
+.btn.loading::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid;
+    border-radius: 50%;
+    border-color: currentColor transparent transparent;
+    transform: translate(-50%, -50%);
+    animation: button-spin 0.6s linear infinite;
+}
+
+@keyframes button-spin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .cta-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Focus state for accessibility */
+.btn:focus-visible {
+    outline: 3px solid rgba(59, 130, 246, 0.5);
+    outline-offset: 2px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .btn-link {
+        color: #60a5fa;
+        border-color: #60a5fa;
+    }
+
+    .btn-link:hover {
+        background: rgba(96, 165, 250, 0.1);
+    }
+} 

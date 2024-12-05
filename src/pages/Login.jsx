@@ -28,7 +28,7 @@ const Login = () => {
             setError('');
             setLoading(true);
             await login(formData.email, formData.password);
-            navigate('/dashboard');
+            navigate('/investments');
         } catch (err) {
             setError('Inloggen mislukt. Controleer je gegevens.');
             console.error(err);
@@ -46,7 +46,7 @@ const Login = () => {
             provider.addScope('profile');
             
             await loginWithGoogle(provider);
-            navigate('/dashboard');
+            navigate('/investments');
         } catch (err) {
             console.error('Google login error:', err);
             setError(err.message || 'Google login mislukt. Probeer het opnieuw.');

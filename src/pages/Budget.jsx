@@ -1,14 +1,14 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { FaEdit } from 'react-icons/fa';
-import '../styles/Dashboard.css';
+import '../styles/Budget.css';
 import { useNavigate } from 'react-router-dom';
 
-import SpendingChart from '../components/SpendingChart';
-import SavingsGoals from '../components/SavingsGoal';
-import FireChartDashboard from '../components/FireChartDashboard';
-import MonthlySpending from '../components/MonthlySpending';
-import TotalBudgetChart from '../components/TotalBudgetChart';
+import SpendingChart from '../components/budget/SpendingChart';
+import SavingsGoals from '../components/budget/SavingsGoal';
+import MonthlySpending from '../components/budget/MonthlySpending';
+import TotalBudgetChart from '../components/budget/TotalBudgetChart';
+
 // Local Storage; voor het ophalen van de maandelijkse inkomen
 // Context; voor het ophalen van de budgetten en het totaal budget
 // Bij opschaling, gebruik Backend & Database setup
@@ -58,21 +58,6 @@ const Dashboard = () => {
                         <TotalBudgetChart />
                         <SpendingChart />
                         <SavingsGoals />
-                    </div>
-                </section>
-
-                {/* Fire overzicht */}
-                <section className="dashboard-section">
-                    <div className="section-header">
-                        <h2>
-                            Fire overzicht
-                            <button className="edit-button" onClick={handleFIREClick}>
-                                <FaEdit size={20} />
-                            </button>
-                        </h2>
-                    </div>
-                    <div className="fire-container">
-                        <FireChartDashboard />
                     </div>
                 </section>
 

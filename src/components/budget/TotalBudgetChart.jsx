@@ -1,7 +1,7 @@
 import React from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useBudget } from '../context/BudgetContext';
-import '../styles/TotalBudgetChart.css';
+import { useAuth } from '../../context/AuthContext';
+import { useBudget } from '../../context/BudgetContext';
+import './TotalBudgetChart.css';
 
 const TotalBudgetChart = () => {
     const { user } = useAuth();

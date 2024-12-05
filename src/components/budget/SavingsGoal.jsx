@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import '../styles/SavingsGoal.css';
+import { useAuth } from '../../context/AuthContext';
+import './SavingsGoal.css';
 
 const SavingsGoal = () => {
     const { user } = useAuth();

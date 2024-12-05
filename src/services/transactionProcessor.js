@@ -1,3 +1,5 @@
+// Connectie met de Salt Edge API
+
 class TransactionProcessor {
     categorizeTransaction(transaction) {
         // Categoriseer op basis van description/merchant

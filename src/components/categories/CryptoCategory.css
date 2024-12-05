@@ -1,0 +1,44 @@
+.crypto-content {
+    padding-top: 1rem;
+}
+
+.crypto-distribution {
+    padding: 1rem;
+    background: #f7fafc;
+    border-radius: 8px;
+}
+
+.crypto-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.crypto-item span:first-child {
+    color: #4a5568;
+    font-weight: 500;
+}
+
+.crypto-item span:last-child {
+    color: #2d3748;
+    font-weight: 600;
+}
+
+.add-crypto-button {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: transparent;
+    border: 2px solid #3498db;
+    color: #3498db;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-crypto-button:hover {
+    background: #3498db;
+    color: white;
+} 
