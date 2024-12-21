@@ -1,33 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { useBudget } from '../../context/BudgetContext';
+import { db } from '../../firebase-config';
+import { doc, getDoc } from 'firebase/firestore';
+import { plaidService } from '../../services/PlaidService';
 import './SpendingChart.css';
-
-// TODO:
-// import { saltEdgeService } from '../services/saltEdgeService';
-// import { transactionProcessor } from '../services/transactionProcessor';
 
 const SpendingChart = () => {
     const { user } = useAuth();
+    const [categorySpending, setCategorySpending] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
     // Haal de categorieën en budgetten op uit localStorage
     const savedCategories = localStorage.getItem('budgetCategories');
-    const categories = savedCategories ? JSON.parse(savedCategories) : [];
+    // Zorg ervoor dat we alleen de categorienamen gebruiken
+    const categories = savedCategories ? JSON.parse(savedCategories).map(cat => 
+        typeof cat === 'string' ? cat : cat.name
+    ) : [];
     const categoryBudgets = JSON.parse(localStorage.getItem('categoryBudgets') || '{}');
-
-
-    // Tijdelijke dummy data voor huidige uitgaven (later te vervangen door echte data)
-    const dummyCurrentSpending = {
-        'Huisvesting': 2320,    // Fictief
-        'Boodschappen': 450,   // Fictief
-        'Transport': 650,      // Fictief
-        'Utilities': 520,      // Fictief
-        'Entertainment': 320,  // Fictief
-        'Sparen': 200,        // Fictief
-        'Overig': 100         // Fictief
-    };
-
-    // Const CurrentSpending wordt later vervangen door echte data,
-    // Deze data wordt opgehaald uit de SaltEdge API
 
     // Helper functie om kleur te bepalen op basis van budget gebruik
     const getBarColor = (current, budget) => {
@@ -36,42 +26,110 @@ const SpendingChart = () => {
         const percentage = (current / budget) * 100;
         
         if (percentage > 100) {
-            // Fel rood als over budget
             return '#e74c3c';
         } else if (percentage > 80) {
-            // Gradient van oranje naar rood tussen 80-100%
             const redIntensity = Math.round(231 + ((percentage - 80) * 1.2));
             return `rgb(${redIntensity}, ${Math.round(76 + (100 - percentage))}, 60)`;
         } else {
-            // Gradient van groen naar oranje tussen 0-80%
-            // Bij 0% = donkergroen, bij 80% = oranje
             const greenValue = Math.round(46 + ((80 - percentage) * 2));
             const redValue = Math.round((percentage / 80) * 231);
             return `rgb(${redValue}, ${greenValue}, 60)`;
         }
     };
 
+    // Plaid naar onze categorieën mapping
+    const plaidCategoryMapping = {
+        'RENT_AND_UTILITIES': 'Huisvesting',
+        'FOOD_AND_DRINK': 'Boodschappen',
+        'TRANSPORTATION': 'Transport',
+        'ENTERTAINMENT': 'Entertainment',
+        'TRANSFER': 'Sparen',
+        'GENERAL_MERCHANDISE': 'Overig',
+        'PERSONAL_CARE': 'Overig',
+        'TRAVEL': 'Entertainment',
+        'LOAN_PAYMENTS': 'Huisvesting',
+        'GENERAL_SERVICES': 'Utilities',
+        'INCOME': 'Overig',
+        'OTHER': 'Overig'
+    };
+
+    useEffect(() => {
+        const fetchTransactions = async () => {
+            if (!user) return;
+
+            try {
+                setIsLoading(true);
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                const userData = userDoc.data();
+
+                if (!userData?.plaidAccessToken) {
+                    console.log('Geen bankrekening gekoppeld');
+                    return;
+                }
+
+                const { transactions } = await plaidService.getCurrentMonthTransactions(
+                    userData.plaidAccessToken
+                );
+
+                // Log ruwe transacties voor debugging
+                console.log('Raw transactions:', transactions.map(t => ({
+                    amount: t.amount,
+                    category: t.personal_finance_category?.primary,
+                    name: t.name
+                })));
+
+                // Groepeer transacties per categorie
+                const spendingByCategory = transactions.reduce((acc, transaction) => {
+                    const plaidCategory = transaction.personal_finance_category?.primary || 'OTHER';
+                    const mappedCategory = plaidCategoryMapping[plaidCategory] || 'Overig';
+                    
+                    // Log elke mapping voor debugging
+                    console.log(`Mapping ${plaidCategory} -> ${mappedCategory} (${transaction.amount})`);
+                    
+                    acc[mappedCategory] = (acc[mappedCategory] || 0) + transaction.amount;
+                    return acc;
+                }, {});
+
+                console.log('Final spending breakdown:', spendingByCategory);
+                setCategorySpending(spendingByCategory);
+            } catch (err) {
+                console.error('Error fetching transactions:', err);
+                setError('Kon uitgaven niet ophalen');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchTransactions();
+    }, [user]);
+
+    if (isLoading) return <div>Laden...</div>;
+    if (error) return <div className="error-message">{error}</div>;
+
     return (
         <div className="barchart">
-            {Object.entries(dummyCurrentSpending).map(([categoryName, current], index) => (
-                <div key={index} className="category-container">
-                    <div className="category-header">
-                        <span className="category-name">{categoryName}</span>
-                        <span className="category-amounts">
-                            €{current} / €{categoryBudgets[categoryName] || 0}
-                        </span>
+            {categories.map((categoryName, index) => {
+                const current = categorySpending[categoryName] || 0;
+                return (
+                    <div key={index} className="category-container">
+                        <div className="category-header">
+                            <span className="category-name">{categoryName}</span>
+                            <span className="category-amounts">
+                                €{current.toLocaleString()} / €{categoryBudgets[categoryName] || 0}
+                            </span>
+                        </div>
+                        <div className="bar-container">
+                            <div 
+                                className="bar"
+                                style={{ 
+                                    width: `${(current / (categoryBudgets[categoryName] || 1)) * 100}%`,
+                                    backgroundColor: getBarColor(current, categoryBudgets[categoryName])
+                                }}
+                            />
+                        </div>
                     </div>
-                    <div className="bar-container">
-                        <div 
-                            className="bar"
-                            style={{ 
-                                width: `${(current / (categoryBudgets[categoryName] || 1)) * 100}%`,
-                                backgroundColor: getBarColor(current, categoryBudgets[categoryName])
-                            }}
-                        />
-                    </div>
-                </div>
-            ))}
+                );
+            })}
         </div>
     );
 };

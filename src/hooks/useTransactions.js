@@ -27,11 +27,12 @@ export const useTransactions = () => {
                 }
 
                 // Haal transacties op via Plaid
-                const spending = await plaidService.getCurrentMonthTransactions(
+                const { total_spending } = await plaidService.getCurrentMonthTransactions(
                     userData.plaidAccessToken
                 );
                 
-                setCurrentMonthSpending(spending);
+                // Gebruik Math.abs om het bedrag positief te maken
+                setCurrentMonthSpending(Math.abs(total_spending));
             } catch (err) {
                 console.error('Error fetching transactions:', err);
                 setError('Kon uitgaven niet ophalen');

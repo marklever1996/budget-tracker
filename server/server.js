@@ -93,19 +93,31 @@ app.post('/api/plaid/transactions', async (req, res) => {
         console.log('Fetching transactions...', { start_date, end_date });
         const response = await plaidClient.transactionsGet(request);
         
-        const transactions = response.data.transactions.filter(
-            transaction => transaction.amount > 0
-        );
+        // Filter uitgaven en maak ze positief
+        const transactions = response.data.transactions
+            .filter(transaction => transaction.amount < 0)  // Filter uitgaven (negatieve bedragen)
+            .map(transaction => ({
+                ...transaction,
+                amount: Math.abs(transaction.amount),  // Maak bedrag positief
+                personal_finance_category: {
+                    primary: transaction.personal_finance_category?.primary || 'OTHER'
+                }
+            }));
 
+        // Log voor debugging
+        console.log('Processed transactions:', transactions.map(t => ({
+            amount: t.amount,
+            category: t.personal_finance_category.primary,
+            name: t.name
+        })));
+
+        // Bereken totaal (bedragen zijn nu al positief)
         const totalSpending = transactions.reduce(
             (sum, transaction) => sum + transaction.amount,
             0
         );
 
-        console.log('Found transactions:', {
-            count: transactions.length,
-            totalSpending
-        });
+        console.log('Total spending:', totalSpending);
 
         res.json({ 
             transactions,

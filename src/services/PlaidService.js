@@ -93,8 +93,10 @@ class PlaidService {
                 end_date: endDate
             });
 
-            // De server stuurt nu het totaalbedrag direct terug
-            return response.data.total_spending;
+            return {
+                transactions: response.data.transactions,
+                total_spending: response.data.total_spending
+            };
         } catch (error) {
             console.error('Error fetching transactions:', error);
             throw new Error('Kon transacties niet ophalen: ' + 
