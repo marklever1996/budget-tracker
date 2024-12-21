@@ -13,6 +13,7 @@ import Login from './pages/Login';
 import Callback from './pages/Callback';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Contact from './pages/Contact';
 import ErrorBoundary from './components/ErrorBoundary';
 import PlaidCallback from './pages/PlaidCallback';
 
@@ -26,6 +27,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Landingpage />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/contact" element={<Contact />} />
               
               {/* Beveiligde routes */}
               <Route path="/investments" element={
@@ -53,7 +55,7 @@ function App() {
                   <FireCalculator />
                 </ProtectedRoute>
               } />
-              
+
               {/* Callback route voor Plaid */}
               <Route path="/callback" element={<PlaidCallback />} />
             </Routes>

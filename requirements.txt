@@ -12,6 +12,7 @@ react-dom==18.2.0
 react-router-dom==6.x
 react-plaid-link==3.x
 react-icons==4.x
+framer-motion==10.16.4
 axios==1.7.9
 firebase==10.x
 recharts==2.x
