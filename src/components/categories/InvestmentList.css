@@ -1,0 +1,128 @@
+/* Basis container voor een individueel aandeel */
+.investment-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 0.75rem;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+/* Hover effect voor de container */
+.investment-item:hover {
+    background: #f8fafc;
+    border-color: rgba(0, 0, 0, 0.1);
+    transform: translateX(2px);
+}
+
+/* Container voor de hoofdinhoud */
+.investment-item__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Rij layout voor informatie */
+.investment-item__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Styling voor het ticker symbool */
+.investment-item__ticker {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+/* Styling voor de totale waarde */
+.investment-item__total {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* Styling voor de prijs per aandeel informatie */
+.investment-item__price {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+/* Basis styling voor het veranderingspercentage */
+.investment-item__change {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Groene styling voor positieve verandering */
+.investment-item__change.positive {
+    background: rgba(34, 197, 94, 0.1);
+    color: #15803d;
+}
+
+/* Rode styling voor negatieve verandering */
+.investment-item__change.negative {
+    background: rgba(239, 68, 68, 0.1);
+    color: #b91c1c;
+}
+
+/* Styling voor de verwijder knop */
+.investment-item__remove {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: 0; /* Standaard onzichtbaar */
+}
+
+/* Toon verwijder knop bij hover */
+.investment-item:hover .investment-item__remove {
+    opacity: 1;
+}
+
+/* Hover effect voor verwijder knop */
+.investment-item__remove:hover {
+    background: rgba(239, 68, 68, 0.1);
+    transform: scale(1.1);
+}
+
+/* Container voor de lijst met aandelen */
+.stocks-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+}
+
+/* Responsive aanpassingen voor kleinere schermen */
+@media (max-width: 640px) {
+    .investment-item {
+        padding: 0.875rem 1rem;
+    }
+
+    .investment-item__ticker,
+    .investment-item__total {
+        font-size: 1rem;
+    }
+
+    .investment-item__price {
+        font-size: 0.813rem;
+    }
+} 

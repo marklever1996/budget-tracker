@@ -36,3 +36,6 @@ Helper-functies zoals:
 
 calculateSavings.js: Voor het berekenen van hoeveel een gebruiker kan besparen.
 formatCurrency.js: Om bedragen op te maken (bijv. €1.234,56).
+
+
+Abonnement Checker: App die gebruikers helpt vergeten abonnementen te annuleren.

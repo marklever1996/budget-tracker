@@ -1,0 +1,303 @@
+.notification-banner {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.95), rgba(37, 99, 235, 0.95));
+    backdrop-filter: blur(12px);
+    color: white;
+    padding: 2rem;
+    margin: 1rem 0 2rem;
+    border-radius: 1.5rem;
+    box-shadow: 
+        0 8px 32px rgba(59, 130, 246, 0.25),
+        0 4px 8px rgba(37, 99, 235, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.notification-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at top right,
+        rgba(255, 255, 255, 0.15),
+        transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.notification-banner:hover::before {
+    opacity: 1;
+}
+
+.banner-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.banner-text {
+    flex: 1;
+}
+
+.banner-text h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(to right, #fff, #e2e8f0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.5px;
+}
+
+.banner-text p {
+    font-size: 1rem;
+    line-height: 1.6;
+    opacity: 0.9;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.broker-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    width: 100%;
+    max-width: 400px;
+    perspective: 1000px;
+}
+
+.link-button {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    overflow: hidden;
+}
+
+.link-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.link-button:hover {
+    transform: translateY(-4px) scale(1.02);
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 
+        0 10px 20px rgba(0, 0, 0, 0.1),
+        0 6px 6px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.link-button:hover::before {
+    opacity: 1;
+}
+
+.link-button:active {
+    transform: translateY(-2px) scale(0.98);
+    transition-duration: 0.1s;
+}
+
+/* Glowing effect */
+.link-button::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+        circle at center,
+        rgba(255, 255, 255, 0.2) 0%,
+        transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.link-button:hover::after {
+    opacity: 1;
+}
+
+/* Loading state */
+.link-button[disabled] {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.link-button[disabled]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.banner-error {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 0.75rem;
+    color: #fee2e2;
+    font-size: 0.9rem;
+    backdrop-filter: blur(4px);
+    text-align: left;
+}
+
+/* Animaties */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .notification-banner {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    .banner-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+
+    .broker-buttons {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+    }
+
+    .banner-text h3 {
+        font-size: 1.25rem;
+    }
+}
+
+.link-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.link-button:disabled:hover {
+    transform: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: none;
+}
+
+.dismiss-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fecaca;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: scale(0.9);
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+}
+
+.notification-banner:hover .dismiss-button {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.dismiss-button:hover {
+    background: rgba(239, 68, 68, 0.25);
+    border-color: rgba(239, 68, 68, 0.4);
+    transform: scale(1.1);
+    box-shadow: 
+        0 6px 16px rgba(239, 68, 68, 0.3),
+        0 2px 4px rgba(239, 68, 68, 0.2);
+    color: #fee2e2;
+}
+
+.dismiss-button:active {
+    transform: scale(0.95);
+}
+
+.dismiss-button svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+}
+
+.dismiss-button:hover svg {
+    transform: rotate(90deg);
+}
+
+/* Voeg een subtiele glow toe aan de banner bij hover */
+.notification-banner:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 36px rgba(59, 130, 246, 0.3),
+        0 6px 12px rgba(37, 99, 235, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}

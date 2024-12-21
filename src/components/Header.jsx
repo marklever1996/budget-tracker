@@ -29,7 +29,7 @@ const Header = () => {
         <ul className="nav-links">
           <li><Link to="/investments" className={location.pathname === '/investments' ? 'active' : ''}>Home</Link></li>
           <li><Link to="/budget" className={location.pathname === '/budget' ? 'active' : ''}>Budgetoverzicht</Link></li>
-          <li><Link to="/budget-calculator" className={location.pathname === '/budget-calculator' ? 'active' : ''}>Maandelijkse uitgaves</Link></li>
+          <li><Link to="/fire" className={location.pathname === '/fire' ? 'active' : ''}>FIRE Doelen</Link></li>
           <li>
             <button className="profile-button" onClick={handleLogoutClick}>
               <FaUserCircle size={24} />

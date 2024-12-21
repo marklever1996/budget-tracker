@@ -1,5 +1,5 @@
 import React from 'react';
-import './OtherAssetsCategory.css';
+import './CategoryCard.css';
 
 const OtherAssetsCategory = ({ onValueChange }) => {
     return (

@@ -9,7 +9,11 @@ import './SpendingChart.css';
 
 const SpendingChart = () => {
     const { user } = useAuth();
+    // Haal de categorieën en budgetten op uit localStorage
+    const savedCategories = localStorage.getItem('budgetCategories');
+    const categories = savedCategories ? JSON.parse(savedCategories) : [];
     const categoryBudgets = JSON.parse(localStorage.getItem('categoryBudgets') || '{}');
+
 
     // Tijdelijke dummy data voor huidige uitgaven (later te vervangen door echte data)
     const dummyCurrentSpending = {
@@ -22,55 +26,8 @@ const SpendingChart = () => {
         'Overig': 100         // Fictief
     };
 
-    // Combineer de fictieve uitgaven met de echte budgetten van de user
-    const categories = [
-        { 
-            name: 'Huisvesting', 
-            current: dummyCurrentSpending['Huisvesting'],  // Fictief
-            budget: categoryBudgets['Huisvesting'] || 0    // Echt budget van user
-        },
-        { 
-            name: 'Boodschappen', 
-            current: dummyCurrentSpending['Boodschappen'], // Fictief
-            budget: categoryBudgets['Boodschappen'] || 0   // Echt budget van user
-        },
-        { 
-            name: 'Transport', 
-            current: dummyCurrentSpending['Transport'],    // Fictief
-            budget: categoryBudgets['Transport'] || 0      // Echt budget van user
-        },
-        { 
-            name: 'Utilities', 
-            current: dummyCurrentSpending['Utilities'],    // Fictief
-            budget: categoryBudgets['Utilities'] || 0      // Echt budget van user
-        },
-        { 
-            name: 'Entertainment', 
-            current: dummyCurrentSpending['Entertainment'], // Fictief
-            budget: categoryBudgets['Entertainment'] || 0   // Echt budget van user
-        },
-        { 
-            name: 'Overig', 
-            current: dummyCurrentSpending['Sparen'],       // Fictief
-            budget: categoryBudgets['Sparen'] || 0         // Echt budget van user
-        },
-        { 
-            name: 'Sparen', 
-            current: dummyCurrentSpending['Overig'],       // Fictief
-            budget: categoryBudgets['Overig'] || 0         // Echt budget van user
-        }
-    ];
-
-    // TODO:
-    // const [currentSpending, setCurrentSpending] = useState({
-    //     'Huisvesting': 0,
-    //     'Boodschappen': 0,
-    //     'Transport': 0,
-    //     'Utilities': 0,
-    //     'Entertainment': 0,
-    //     'Sparen': 0,
-    //     'Overig': 0
-    // });
+    // Const CurrentSpending wordt later vervangen door echte data,
+    // Deze data wordt opgehaald uit de SaltEdge API
 
     // Helper functie om kleur te bepalen op basis van budget gebruik
     const getBarColor = (current, budget) => {
@@ -93,28 +50,6 @@ const SpendingChart = () => {
             return `rgb(${redValue}, ${greenValue}, 60)`;
         }
     };
-
-    // const fetchTransactions = async () => {
-    //     try {
-    //         const transactions = await saltEdgeService.getTransactions(
-    //             connectionId,
-    //             startDate,
-    //             endDate
-    //         );
-            
-    //         // Verwerk de transacties in categorieën
-    //         const categorizedSpending = transactionProcessor.processTransactions(transactions);
-            
-    //         // Update de state met de echte uitgaven
-    //         setCurrentSpending(categorizedSpending);
-    //     } catch (error) {
-    //         console.error('Error fetching transactions:', error);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     fetchTransactions();
-    // }, []);
 
     return (
         <div className="barchart">

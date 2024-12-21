@@ -7,19 +7,19 @@ const PricingPlans = () => {
             name: "Basis",
             price: "Gratis",
             features: [
+                "30 dagen gratis proefperiode",
                 "Basis budgettering",
-                "Uitgaven tracking",
                 "Maandelijks overzicht",
-                "Basis FIRE calculator"
+                "Basis FIRE calculator",
+                
             ],
             isPopular: false
         },
         {
             name: "Pro",
-            price: "€1.99",
+            price: "€4.99",
             period: "/maand",
             features: [
-                "Alles uit Basis",
                 "Geavanceerde budgettering",
                 "Vermogensbeheer",
                 "Uitgebreide FIRE calculator",
@@ -30,7 +30,7 @@ const PricingPlans = () => {
         },
         {
             name: "Familie",
-            price: "€4.99",
+            price: "€9.99",
             period: "/maand",
             features: [
                 "Alles uit Pro",

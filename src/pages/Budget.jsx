@@ -1,18 +1,18 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { FaEdit } from 'react-icons/fa';
-import '../styles/Budget.css';
 import { useNavigate } from 'react-router-dom';
+// Local Storage; voor het ophalen van de maandelijkse inkomen
+// Context; voor het ophalen van de budgetten en het totaal budget
+// Bij opschaling, gebruik Backend & Database setup
+import { useBudget } from '../context/BudgetContext';
 
 import SpendingChart from '../components/budget/SpendingChart';
 import SavingsGoals from '../components/budget/SavingsGoal';
 import MonthlySpending from '../components/budget/MonthlySpending';
 import TotalBudgetChart from '../components/budget/TotalBudgetChart';
 
-// Local Storage; voor het ophalen van de maandelijkse inkomen
-// Context; voor het ophalen van de budgetten en het totaal budget
-// Bij opschaling, gebruik Backend & Database setup
-import { useBudget } from '../context/BudgetContext';
+import '../styles/Budget.css';
 
 const Dashboard = () => {
     const { user } = useAuth();
@@ -32,10 +32,6 @@ const Dashboard = () => {
         return <div>Laden...</div>;
     }
 
-    const handleFIREClick = () => {
-        navigate('/fire-calculator');
-    };
-
     const handleBudgetClick = () => {
         navigate('/budget-calculator');
     };
@@ -46,29 +42,33 @@ const Dashboard = () => {
                 {/* Budget overzicht */}
                 <section className="dashboard-section">
                     <div className="section-header">
-                        <h2>
-                            Budget overzicht
-                            {/* Als de user hierop klikt, wordt deze geleid naar de BudgetCalculator.jsx pagina*/}
-                            <button className="edit-button" onClick={handleBudgetClick}>
-                                <FaEdit size={20} />
-                            </button>
-                        </h2>
+                        <h2>Budget overzicht</h2>
+                        <button className="edit-button" onClick={handleBudgetClick}>
+                            <FaEdit size={20} />
+                        </button>
                     </div>
                     <div className="barchart-container">
-                        <TotalBudgetChart />
-                        <SpendingChart />
-                        <SavingsGoals />
+                        <div className="chart-item">
+                            <TotalBudgetChart />
+                        </div>
+                        <div className="chart-item">
+                            <SpendingChart />
+                        </div>
+                        <div className="chart-item">
+                            <SavingsGoals />
+                        </div>
                     </div>
                 </section>
 
-                {/* Recent uitgaven */}
+                {/* Maandelijkse uitgaven */}
                 <section className="dashboard-section">
-                    <h2>Maandelijkse uitgaven</h2>
+                    <div className="section-header">
+                        <h2>Maandelijkse uitgaven</h2>
+                    </div>
                     <div className="monthly-spending-chart">
                         <MonthlySpending />
                     </div>
                 </section>
-
             </div>
         </div>
     );

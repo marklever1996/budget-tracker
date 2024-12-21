@@ -1,127 +1,95 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { vehicleService } from '../../services/vehicleService';
-import { rdwService } from '../../services/rdwService';
-import VehicleModal from './VehicleModal';
-import './VehiclesCategory.css';
+import React, { useEffect } from 'react';
+import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import { useVehicles } from '../../hooks/useVehicles';
+import VehicleForm from './VehicleForm';
+import './CategoryCard.css';
+import '../../styles/Modal.css';
 
 const VehiclesCategory = ({ onValueChange }) => {
-    const { user } = useAuth();
-    const [vehicles, setVehicles] = useState([]);
-    const [showModal, setShowModal] = useState(false);
-    const [selectedVehicle, setSelectedVehicle] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
+    const {
+        vehicles,
+        totalVehicleValue,
+        isLoading,
+        error,
+        showModal,
+        selectedVehicle,
+        handleAddVehicle,
+        handleEditVehicle,
+        handleSaveVehicle,
+        setShowModal,
+        handleDeleteVehicle
+    } = useVehicles();
 
-    // Laad voertuigen bij het inloggen
+    // Update parent wanneer totalVehicleValue verandert
     useEffect(() => {
-        const loadVehicles = async () => {
-            if (user) {
-                try {
-                    const userVehicles = await vehicleService.getUserVehicles(user.uid);
-                    setVehicles(userVehicles);
-                    
-                    // Update totale waarde
-                    const totalValue = userVehicles.reduce((sum, vehicle) => 
-                        sum + (vehicle.geschatteWaarde || 0), 0
-                    );
-                    onValueChange(totalValue);
-                } catch (error) {
-                    console.error('Error loading vehicles:', error);
-                    setError('Kon voertuigen niet laden');
-                }
-            }
-        };
-
-        loadVehicles();
-    }, [user, onValueChange]);
-
-    const handleAddVehicle = () => {
-        setSelectedVehicle(null);
-        setShowModal(true);
-    };
-
-    const handleEditVehicle = (vehicle) => {
-        setSelectedVehicle(vehicle);
-        setShowModal(true);
-    };
-
-    const handleSaveVehicle = async (vehicleData) => {
-        setIsLoading(true);
-        setError('');
-
-        try {
-            const savedVehicle = await vehicleService.saveVehicle(user.uid, vehicleData);
-            
-            if (selectedVehicle) {
-                // Update bestaand voertuig
-                setVehicles(prev => prev.map(v => 
-                    v.kenteken === savedVehicle.kenteken ? savedVehicle : v
-                ));
-            } else {
-                // Voeg nieuw voertuig toe
-                setVehicles(prev => [...prev, savedVehicle]);
-            }
-
-            // Update totale waarde
-            const totalValue = vehicles.reduce((sum, vehicle) => 
-                sum + (vehicle.geschatteWaarde || 0), 0
-            );
-            onValueChange(totalValue);
-            
-            setShowModal(false);
-        } catch (error) {
-            console.error('Error saving vehicle:', error);
-            setError(error.message || 'Kon voertuig niet opslaan');
-        } finally {
-            setIsLoading(false);
+        if (totalVehicleValue !== undefined) {
+            onValueChange(totalVehicleValue);
         }
-    };
+    }, [totalVehicleValue, onValueChange]);
 
     if (!vehicles.length) {
         return (
-            <div className="empty-vehicle">
-                <p>Geen voertuig toegevoegd</p>
+            <div className="category-content">
                 <button 
-                    className="add-vehicle-button"
+                    className="add-button"
                     onClick={handleAddVehicle}
                 >
-                    Voertuig Toevoegen
+                    <FaPlus /> <span>Voeg Voertuig Toe</span>
                 </button>
             </div>
         );
     }
 
     return (
-        <>
-            <div className="vehicle-list">
-                {vehicles.map((vehicle, index) => (
-                    <div key={index} className="vehicle-details">
-                        <div className="vehicle-info">
-                            <p><strong>Merk:</strong> {vehicle.merk}</p>
-                            <p><strong>Model:</strong> {vehicle.model}</p>
-                            <p><strong>Bouwjaar:</strong> {vehicle.bouwjaar}</p>
-                            <p><strong>Waarde:</strong> €{vehicle.geschatteWaarde?.toLocaleString()}</p>
+        <div className="category-content">
+            <div className="items-list">
+                {vehicles.map((vehicle) => (
+                    <div key={vehicle.kenteken} className="item">
+                        <div className="item-header">
+                            <div className="title-section">
+                                <span className="item-primary">
+                                    {vehicle.merk} {vehicle.model}
+                                </span>
+                                <button 
+                                    className="edit-button-category"
+                                    onClick={() => handleEditVehicle(vehicle)}
+                                    aria-label={`Wijzig ${vehicle.merk} ${vehicle.model}`}
+                                >
+                                    <FaEdit size={14} />
+                                </button>
+                            </div>
+                            <button 
+                                className="delete-button"
+                                onClick={() => handleDeleteVehicle(vehicle)}
+                                aria-label={`Verwijder ${vehicle.merk} ${vehicle.model}`}
+                            >
+                                <FaTrash size={14} />
+                                <span className="delete-popup">Klik om te verwijderen</span>
+                            </button>
                         </div>
-                        <button 
-                            className="edit-vehicle-button"
-                            onClick={() => handleEditVehicle(vehicle)}
-                        >
-                            Wijzig Voertuig
-                        </button>
+                        <div className="item-content">
+                            <span className="item-secondary">
+                                Bouwjaar {vehicle.bouwjaar}
+                            </span>
+                            <div className="item-value">
+                                <span className="current-value">
+                                    €{vehicle.geschatteWaarde?.toLocaleString()}
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 ))}
-                
-                <button 
-                    className="add-vehicle-button"
-                    onClick={handleAddVehicle}
-                >
-                    + Voertuig Toevoegen
-                </button>
             </div>
 
+            <button 
+                className="add-button"
+                onClick={handleAddVehicle}
+            >
+                <FaPlus /> <span>Voeg Voertuig Toe</span>
+            </button>
+
             {showModal && (
-                <VehicleModal
+                <VehicleForm
                     vehicle={selectedVehicle}
                     onSave={handleSaveVehicle}
                     onClose={() => setShowModal(false)}
@@ -129,7 +97,7 @@ const VehiclesCategory = ({ onValueChange }) => {
                     error={error}
                 />
             )}
-        </>
+        </div>
     );
 };
 

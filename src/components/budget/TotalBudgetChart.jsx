@@ -1,19 +1,27 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useBudget } from '../../context/BudgetContext';
+import { useTransactions } from '../../hooks/useTransactions';
 import './TotalBudgetChart.css';
 
 const TotalBudgetChart = () => {
     const { user } = useAuth();
     const { totalBudget } = useBudget();
-    const currentSpending = 1800;
-    const percentage = (currentSpending / totalBudget) * 100;
+    const { currentMonthSpending, isLoading, error } = useTransactions();
+
+    const percentage = (currentMonthSpending / totalBudget) * 100;
 
     return (
         <div className="total-budget-chart">
             <div className="budget-header">
                 <span className="budget-title">Totaal Budget</span>
-                <span className="budget-amounts">€{currentSpending} / €{totalBudget}</span>
+                <span className="budget-amounts">
+                    {isLoading ? (
+                        'Laden...'
+                    ) : (
+                        `€${currentMonthSpending.toLocaleString()} / €${totalBudget.toLocaleString()}`
+                    )}
+                </span>
             </div>
             <div className="budget-bar-container">
                 <div 
@@ -30,6 +38,11 @@ const TotalBudgetChart = () => {
                     }}
                 />
             </div>
+            {error && (
+                <div className="error-message">
+                    {error}
+                </div>
+            )}
         </div>
     );
 };

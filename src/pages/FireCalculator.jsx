@@ -1,124 +1,238 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import '../styles/FireCalculator.css';
+import { FireChartDashboard } from '../components/fire/FireChartDashboard';
+import { monteCarloSimulation } from '../services/monteCarloService';
+import { fireCalculationService } from '../services/fireCalculationService';
 
 const FireCalculator = () => {
     const navigate = useNavigate();
-    const { user } = useAuth();
+    const [inputs, setInputs] = useState({
+        currentAge: 30,
+        targetAge: 50,
+        currentSavings: 0,
+        monthlyIncome: 0,
+        monthlyExpenses: 0,
+        hasOwnHome: false,
+        mortgageDebt: 0,
+        mortgageInterestRate: 0,
+        yearlyPropertyTax: 0,
+        yearlyAOW: 17000,
+        pensionAge: 67,
+        employerPension: 0,
+        investmentStrategy: 'moderate',
+        expectedReturn: {
+            conservative: 4.5,
+            moderate: 6,
+            aggressive: 7.5
+        },
+        inflationRate: 2,
+        taxRate: 31,
+        safeWithdrawalRate: 3.5
+    });
+
+    const [results, setResults] = useState({
+        requiredAmount: 0,
+        yearsToFIRE: 0,
+        monthlyInvestmentNeeded: 0,
+        yearlyPassiveIncome: 0,
+        taxImpact: 0
+    });
+
+    const [simulationResults, setSimulationResults] = useState(null);
+
+    const calculateFIRE = async () => {
+        try {
+            const baseCalculations = fireCalculationService.calculateRequiredAmount(inputs);
+            
+            const simulationData = await monteCarloSimulation({
+                initialAmount: inputs.currentSavings,
+                monthlyContribution: inputs.monthlyIncome - inputs.monthlyExpenses,
+                yearsToRetirement: inputs.targetAge - inputs.currentAge,
+                withdrawalRate: inputs.safeWithdrawalRate / 100,
+                portfolioAllocation: {
+                    stocks: 0.7,  // 70% aandelen
+                    bonds: 0.3    // 30% obligaties
+                },
+                returns: {
+                    stocks: 0.07,  // 7% rendement
+                    bonds: 0.02    // 2% rendement
+                },
+                volatility: {
+                    stocks: 0.15,  // 15% volatiliteit
+                    bonds: 0.05    // 5% volatiliteit
+                }
+            });
+
+            setResults(baseCalculations);
+            setSimulationResults(simulationData);
+        } catch (error) {
+            console.error('Calculation error:', error);
+            return {
+                requiredAmount: 0,
+                yearsToFIRE: 0,
+                monthlyInvestmentNeeded: 0,
+                yearlyPassiveIncome: 0,
+                taxImpact: 0
+            };
+        }
+    };
+
+    useEffect(() => {
+        calculateFIRE();
+    }, [inputs]);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setInputs(prev => ({
+            ...prev,
+            [name]: Number(value)
+        }));
+    };
 
     return (
         <div className="fire-calculator">
             <div className="calculator-container">
-                {/* Header sectie */}
                 <div className="calculator-header">
                     <h1>FIRE Calculator</h1>
-                    <p>Bereken je weg naar financiële onafhankelijkheid</p>
+                    <p>Bereken wanneer je financieel onafhankelijk kunt zijn</p>
                 </div>
 
-                {/* Huidige Financiële Situatie */}
-                <section className="calculator-section">
-                    <h2>Huidige Financiële Situatie</h2>
+                <div className="calculator-section">
+                    <h2><span className="section-number">1</span>Persoonlijke Gegevens</h2>
                     <div className="input-grid">
                         <div className="input-group">
-                            <label>Leeftijd</label>
-                            <input type="number" placeholder="Bijv. 30" />
+                            <label>Huidige Leeftijd</label>
+                            <input
+                                type="number"
+                                name="currentAge"
+                                value={inputs.currentAge}
+                                onChange={handleInputChange}
+                            />
                         </div>
                         <div className="input-group">
-                            <label>Netto maandinkomen</label>
-                            <input type="number" placeholder="€" />
-                        </div>
-                        <div className="input-group">
-                            <label>Maandelijkse uitgaven</label>
-                            <input type="number" placeholder="€" />
-                        </div>
-                        <div className="input-group">
-                            <label>Huidige besparingen</label>
-                            <input type="number" placeholder="€" />
+                            <label>Gewenste FIRE Leeftijd</label>
+                            <input
+                                type="number"
+                                name="targetAge"
+                                value={inputs.targetAge}
+                                onChange={handleInputChange}
+                            />
                         </div>
                     </div>
-                </section>
+                </div>
 
-                {/* Investeringsprofiel */}
-                <section className="calculator-section">
-                    <h2>Investeringsprofiel</h2>
+                <div className="calculator-section">
+                    <h2><span className="section-number">2</span>Financiële Situatie</h2>
                     <div className="input-grid">
                         <div className="input-group">
-                            <label>Risicoprofiel</label>
-                            <select>
-                                <option value="conservative">Conservatief (4-6%)</option>
-                                <option value="moderate">Gematigd (6-8%)</option>
-                                <option value="aggressive">Agressief (8-10%)</option>
-                            </select>
+                            <label>Huidig Vermogen</label>
+                            <input
+                                type="number"
+                                name="currentSavings"
+                                value={inputs.currentSavings}
+                                onChange={handleInputChange}
+                                className="input-with-prefix"
+                            />
+                            <span className="input-prefix">€</span>
                         </div>
                         <div className="input-group">
-                            <label>Verwacht rendement</label>
-                            <input type="number" placeholder="%" />
+                            <label>Maandelijks Inkomen</label>
+                            <input
+                                type="number"
+                                name="monthlyIncome"
+                                value={inputs.monthlyIncome}
+                                onChange={handleInputChange}
+                                className="input-with-prefix"
+                            />
+                            <span className="input-prefix">€</span>
                         </div>
                         <div className="input-group">
-                            <label>Inflatie aanname</label>
-                            <input type="number" placeholder="%" defaultValue="2" />
+                            <label>Maandelijkse Uitgaven</label>
+                            <input
+                                type="number"
+                                name="monthlyExpenses"
+                                value={inputs.monthlyExpenses}
+                                onChange={handleInputChange}
+                                className="input-with-prefix"
+                            />
+                            <span className="input-prefix">€</span>
                         </div>
                     </div>
-                </section>
+                </div>
 
-                {/* FIRE Doelen */}
-                <section className="calculator-section">
-                    <h2>FIRE Doelen</h2>
+                <div className="calculator-section">
+                    <h2><span className="section-number">3</span>Aannames</h2>
                     <div className="input-grid">
                         <div className="input-group">
-                            <label>Gewenste FIRE leeftijd</label>
-                            <input type="number" placeholder="Bijv. 45" />
+                            <label>Verwacht Rendement</label>
+                            <input
+                                type="number"
+                                name="expectedReturn"
+                                value={inputs.expectedReturn}
+                                onChange={handleInputChange}
+                                step="0.1"
+                            />
+                            <span className="input-description">Gemiddeld jaarlijks rendement op investeringen (%)</span>
                         </div>
                         <div className="input-group">
-                            <label>Gewenst maandelijks inkomen bij FIRE</label>
-                            <input type="number" placeholder="€" />
+                            <label>Inflatie</label>
+                            <input
+                                type="number"
+                                name="inflationRate"
+                                value={inputs.inflationRate}
+                                onChange={handleInputChange}
+                                step="0.1"
+                            />
+                            <span className="input-description">Verwachte jaarlijkse inflatie (%)</span>
                         </div>
                         <div className="input-group">
-                            <label>Levensstijl na FIRE</label>
-                            <select>
-                                <option value="lean">Lean FIRE (minimaal)</option>
-                                <option value="regular">Regular FIRE (comfortabel)</option>
-                                <option value="fat">Fat FIRE (luxe)</option>
-                            </select>
+                            <label>Safe Withdrawal Rate</label>
+                            <input
+                                type="number"
+                                name="safeWithdrawalRate"
+                                value={inputs.safeWithdrawalRate}
+                                onChange={handleInputChange}
+                                step="0.1"
+                            />
+                            <span className="input-description">Percentage van vermogen dat je jaarlijks kunt opnemen (%)</span>
                         </div>
                     </div>
-                </section>
+                </div>
 
-                {/* Resultaten */}
-                <section className="calculator-section results">
-                    <h2>Resultaten</h2>
+                <div className="results-section">
                     <div className="results-grid">
                         <div className="result-card">
-                            <h3>Benodigd FIRE vermogen</h3>
-                            <span className="amount">€750.000</span>
-                            <p>Gebaseerd op 4% regel</p>
+                            <h3>Benodigd FIRE Vermogen</h3>
+                            <span className="amount">€{results.requiredAmount.toLocaleString()}</span>
+                            <p>Totaal benodigd vermogen voor financiële onafhankelijkheid</p>
                         </div>
                         <div className="result-card">
                             <h3>Jaren tot FIRE</h3>
-                            <span className="amount">15</span>
-                            <p>Bij huidige spaarrate</p>
+                            <span className="amount">{results.yearsToFIRE}</span>
+                            <p>Aantal jaren tot financiële onafhankelijkheid</p>
                         </div>
                         <div className="result-card">
-                            <h3>Benodigde maandelijkse investering</h3>
-                            <span className="amount">€2.500</span>
-                            <p>Om doel te bereiken</p>
-                        </div>
-                        <div className="result-card">
-                            <h3>Spaarrate</h3>
-                            <span className="amount">45%</span>
-                            <p>Van netto inkomen</p>
+                            <h3>Benodigde Maandelijkse Investering</h3>
+                            <span className="amount">€{results.monthlyInvestmentNeeded.toLocaleString()}</span>
+                            <p>Maandelijks te investeren bedrag om je doel te bereiken</p>
                         </div>
                     </div>
-                </section>
 
-                {/* Actie knoppen */}
+                    {simulationResults && (
+                        <FireChartDashboard 
+                            simulationData={simulationResults}
+                            inputs={inputs}
+                        />
+                    )}
+                </div>
+
                 <div className="action-buttons">
-                    <button className="secondary" onClick={() => navigate('/dashboard')}>
-                        Terug naar Dashboard
+                    <button className="secondary" onClick={() => navigate('/fire')}>
+                        Terug
                     </button>
-                    <button className="primary">
-                        Bereken
+                    <button className="primary" onClick={() => navigate('/fire')}>
+                        Bekijk FIRE Dashboard
                     </button>
                 </div>
             </div>

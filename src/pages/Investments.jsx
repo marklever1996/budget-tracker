@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FaChartLine, FaPiggyBank, FaHome, FaCar, FaCoins, FaEllipsisH } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
-import { wozService } from '../services/wozService';
-import { useVehicles } from '../hooks/useVehicles';
 
+// Hooks
+import { useVehicles } from '../hooks/useVehicles';
+import { useInvestments } from '../hooks/useInvestments';
+import { useRealEstate } from '../hooks/useRealEstate';
+import { useSavings } from '../hooks/useSavings';
+
+// Components
 import CategoryCard from '../components/categories/CategoryCard';
 import InvestmentsCategory from '../components/categories/InvestmentsCategory';
 import SavingsCategory from '../components/categories/SavingsCategory';
@@ -11,62 +16,46 @@ import RealEstateCategory from '../components/categories/RealEstateCategory';
 import VehiclesCategory from '../components/categories/VehiclesCategory';
 import CryptoCategory from '../components/categories/CryptoCategory';
 import OtherAssetsCategory from '../components/categories/OtherAssetsCategory';
-import DeGiroBanner from '../components/DeGiroBanner';
+import NotificationBanner from '../components/NotificationBanner';
 
 import '../styles/Investments.css';
 
-
 const Investments = () => {
     const { user } = useAuth();
-    const [isDeGiroLinked, setIsDeGiroLinked] = useState(false);
-    const [wozValue, setWozValue] = useState(0);
+    // Hooks
+    const { totalVehicleValue } = useVehicles();
+    const { totalInvestmentsValue } = useInvestments();
+    const { totalRealEstateValue } = useRealEstate();
+    const { totalSavingsValue } = useSavings();
+    
+    // Totaal vermogen. Dit is de som van alle categorieën. setTotalPortfolioValue wordt verkregen uit de useEffect.
     const [totalPortfolioValue, setTotalPortfolioValue] = useState(0);
+
+    // Portfolio data. Dit is de percentage verandering van de totale waarde. (winst/verlies)
     const [portfolioData, setPortfolioData] = useState({
         monthlyChange: 0,
         yearlyChange: 0
     });
-    const { totalVehicleValue } = useVehicles();
 
-    // Haal WOZ waarde op bij laden
-    useEffect(() => {
-        const fetchWozValue = async () => {
-            try {
-                const userAddress = {
-                    postcode: '1234AB',  // TODO: Uit user profiel halen
-                    huisnummer: '1'
-                };
-                const wozData = await wozService.getWozValue(userAddress);
-                setWozValue(wozData.value);
-            } catch (error) {
-                console.error('Error fetching WOZ value:', error);
-            }
-        };
-
-        if (user) {
-            fetchWozValue();
-        }
-    }, [user]);
-
-    // Categorieën configuratie
-    const categories = {
+    // Verplaats categories naar state
+    const [categories, setCategories] = useState({
         investments: {
             name: 'Beleggingen',
             icon: <FaChartLine />,
-            value: 0,
+            value: totalInvestmentsValue,
             change: 0,
-            needsDeGiro: true
         },
         savings: {
             name: 'Spaargeld',
             icon: <FaPiggyBank />,
-            value: 35000,
+            value: totalSavingsValue,
             change: 0.2
         },
         realEstate: {
             name: 'Woning',
             icon: <FaHome />,
-            value: wozValue,
-            change: 0.5
+            value: totalRealEstateValue, // WOZ
+            change: -0.5
         },
         vehicles: {
             name: 'Voertuigen',
@@ -77,7 +66,7 @@ const Investments = () => {
         crypto: {
             name: 'Crypto',
             icon: <FaCoins />,
-            value: 5000,
+            value: 0,
             change: 0.5
         },
         other: {
@@ -86,28 +75,66 @@ const Investments = () => {
             value: 0,
             change: 0
         }
-    };
+    });
 
-    // Update totale portfolio waarde wanneer categorieën veranderen
-    const updateTotalValue = (categoryName, newValue) => {
-        categories[categoryName].value = newValue;
-        const total = Object.values(categories).reduce((sum, cat) => sum + cat.value, 0);
-        setTotalPortfolioValue(total);
-    };
+    // Update wanneer totalVehicleValue verandert
+    useEffect(() => {
+        setCategories(prev => ({
+            ...prev,
+            vehicles: {
+                ...prev.vehicles,
+                value: totalVehicleValue
+            }
+        }));
+    }, [totalVehicleValue]);
 
-    const handleLinkDeGiro = () => {
-        // TODO: Implementeer DeGiro koppeling
-        setIsDeGiroLinked(true);
-    };
+    // Update wanneer totalInvestmentsValue verandert
+    useEffect(() => {
+        // Voorkom onnodige updates als de waarde 0 is
+        if (totalInvestmentsValue !== undefined) {
+            setCategories(prev => {
+                // Alleen updaten als de waarde daadwerkelijk anders is
+                if (prev.investments.value === totalInvestmentsValue) {
+                    return prev;
+                }
+                return {
+                    ...prev,
+                    investments: {
+                        ...prev.investments,
+                        value: totalInvestmentsValue
+                    }
+                };
+            });
+        }
+    }, [totalInvestmentsValue]);
 
+    // Update totale waarde wanneer een categorie verandert
+    const updateTotalValue = useCallback((categoryName, newValue) => {
+        setCategories(prev => {
+            // Voorkom onnodige updates
+            if (prev[categoryName].value === newValue) {
+                return prev;
+            }
+            return {
+                ...prev,
+                [categoryName]: {
+                    ...prev[categoryName],
+                    value: newValue
+                }
+            };
+        });
+    }, []); // Lege dependency array omdat de functie niet afhankelijk is van props of state
+
+    // Update initiële totale waarde wanneer categories veranderen
+    useEffect(() => {
+        const initialTotal = Object.values(categories).reduce((sum, cat) => sum + cat.value, 0);
+        setTotalPortfolioValue(initialTotal);
+    }, [categories]);
+    
     return (
         <div className="investments-container">
-            {/* Banner */}
-            {/* {!isDeGiroLinked && (
-                <DeGiroBanner onLinkClick={handleLinkDeGiro} />
-            )} */}
+            <NotificationBanner />
 
-            {/* Portfolio Header */}
             <div className="investments-header">
                 <div className="total-value">
                     <h1>Totaal Vermogen</h1>
@@ -125,48 +152,37 @@ const Investments = () => {
                 </div>
             </div>
 
-            {/* Portfolio Grid */}
             <div className="portfolio-grid">
-                <CategoryCard category={categories.investments}>
-                    <InvestmentsCategory 
-                        isDeGiroLinked={isDeGiroLinked} 
-                        onLinkDeGiro={handleLinkDeGiro}
-                        onValueChange={(value) => updateTotalValue('investments', value)}
-                    />
-                </CategoryCard>
-
-                <CategoryCard category={categories.savings}>
-                    <SavingsCategory 
-                        onValueChange={(value) => updateTotalValue('savings', value)}
-                    />
-                </CategoryCard>
-
-                <CategoryCard category={categories.realEstate}>
-                    <RealEstateCategory 
-                        wozValue={wozValue}
-                        onValueChange={(value) => updateTotalValue('realEstate', value)}
-                    />
-                </CategoryCard>
-
-                <CategoryCard category={categories.vehicles}>
-                    <VehiclesCategory 
-                        onValueChange={(value) => {
-                            updateTotalValue('vehicles', value);
-                        }}
-                    />
-                </CategoryCard>
-
-                <CategoryCard category={categories.crypto}>
-                    <CryptoCategory 
-                        onValueChange={(value) => updateTotalValue('crypto', value)}
-                    />
-                </CategoryCard>
-
-                <CategoryCard category={categories.other}>
-                    <OtherAssetsCategory 
-                        onValueChange={(value) => updateTotalValue('other', value)}
-                    />
-                </CategoryCard>
+                {Object.entries(categories).map(([key, category]) => (
+                    <CategoryCard key={key} category={category}>
+                        {key === 'investments' && (
+                            <InvestmentsCategory 
+                                onValueChange={(value) => updateTotalValue('investments', value)}
+                            />
+                        )}
+                        {key === 'savings' && (
+                            <SavingsCategory 
+                                onValueChange={(value) => updateTotalValue('savings', value)}
+                            />
+                        )}
+                        {key === 'realEstate' && (
+                            <RealEstateCategory 
+                                onValueChange={(value) => updateTotalValue('realEstate', value)}
+                            />
+                        )}
+                        {key === 'vehicles' && (
+                            <VehiclesCategory 
+                                onValueChange={(value) => updateTotalValue('vehicles', value)}
+                            />
+                        )}
+                        {key === 'crypto' && (
+                            <CryptoCategory 
+                                onValueChange={(value) => updateTotalValue('crypto', value)}
+                            />
+                        )}
+                        {/* Voeg andere categorieën toe op dezelfde manier */}
+                    </CategoryCard>
+                ))}
             </div>
         </div>
     );

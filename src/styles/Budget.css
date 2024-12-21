@@ -1,35 +1,73 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background-color: #f4f7f9;
-}
 
 .dashboard-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 3rem 2rem;
-    background: #ffffff;
+    padding: 0 2rem 3rem;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(20px);
+    min-height: 100vh;
 }
 
 .dashboard-content {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 2.5rem;
 }
 
 .dashboard-section {
-    background: #ffffff;
-    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 1.5rem;
     padding: 2.5rem;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        0 4px 8px rgba(0, 0, 0, 0.1),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at 50% 0%,
+        rgba(59, 130, 246, 0.1),
+        transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.dashboard-section::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(59, 130, 246, 0.03),
+        transparent
+    );
+    animation: shimmer 10s linear infinite;
+}
+
+.dashboard-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 8px 16px rgba(0, 0, 0, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.dashboard-section:hover::before {
+    opacity: 1;
 }
 
 .section-header {
@@ -38,48 +76,91 @@ body {
     justify-content: space-between;
     margin-bottom: 2rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
 }
 
 .section-header h2 {
-    color: #0f172a;
-    font-size: 1.25rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
 }
 
 .edit-button {
     display: flex;
     align-items: center;
-    padding: 0.75rem;
-    background: #f8fafc;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.75rem;
-    color: #64748b;
+    padding: 0.75rem 1.25rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    color: #94a3b8;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
 }
 
 .edit-button:hover {
-    background: #f1f5f9;
-    color: #3b82f6;
-    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+    color: #60a5fa;
+    border-color: rgba(59, 130, 246, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 
+        0 4px 12px rgba(59, 130, 246, 0.2),
+        0 0 0 1px rgba(59, 130, 246, 0.1);
 }
 
 .barchart-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-direction: column;
     gap: 2rem;
+}
+
+.chart-item {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 2rem;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.chart-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(59, 130, 246, 0.05),
+        transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.chart-item:hover::before {
+    opacity: 1;
 }
 
 .monthly-spending-chart {
     margin-top: 1rem;
     min-height: 400px;
+    position: relative;
+    z-index: 1;
 }
 
-@media (max-width: 1024px) {
-    .barchart-container {
-        grid-template-columns: repeat(2, 1fr);
+@keyframes shimmer {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
     }
 }
 
@@ -89,16 +170,19 @@ body {
     }
     
     .dashboard-content {
-        gap: 2rem;
+        gap: 1.5rem;
     }
 
     .dashboard-section {
         padding: 1.5rem;
     }
 
-    .barchart-container {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+    .section-header h2 {
+        font-size: 1.25rem;
+    }
+
+    .chart-item {
+        padding: 1.5rem;
     }
 }
 
