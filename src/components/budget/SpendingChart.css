@@ -9,6 +9,8 @@
 
 .category-container {
     width: 100%;
+    position: relative;
+    transition: all 0.3s ease;
 }
 
 .category-header {
@@ -37,7 +39,7 @@
 
 .bar {
     height: 100%;
-    transition: width 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 5px;
 }
 
@@ -60,4 +62,125 @@
     .category-amounts {
         font-size: 0.8em;
     }
+} 
+
+.advisor-wrapper {
+    overflow: hidden;
+    animation: slideDown 0.5s ease forwards;
+    transform-origin: top;
+    opacity: 0;
+    margin-top: 1rem;
+}
+
+/* Wanneer er een overschrijding is */
+.category-container:has(.advisor-wrapper) {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+}
+
+/* Animatie voor het verschijnen van het advies */
+@keyframes slideDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px) scaleY(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scaleY(1);
+    }
+}
+
+/* Voeg een pulse effect toe aan de bar bij overschrijding */
+.category-container:has(.advisor-wrapper) .bar {
+    animation: pulseBorder 2s infinite;
+}
+
+@keyframes pulseBorder {
+    0% {
+        box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+    }
+}
+
+/* Update SmartAdvisor styling voor betere integratie */
+.smart-advisor {
+    background: rgba(17, 24, 39, 0.03);
+    backdrop-filter: blur(8px);
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Hover effect voor de hele categorie container */
+.category-container:hover {
+    transform: translateX(4px);
+}
+
+/* Smooth transition voor alle hover effecten */
+.category-container * {
+    transition: all 0.3s ease;
+} 
+
+/* Update bestaande category-info styling */
+.category-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Styling voor het waarschuwingsicoon */
+.warning-icon {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #e74c3c;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+    animation: pulse 2s infinite;
+    transition: all 0.3s ease;
+}
+
+.warning-icon:hover {
+    transform: scale(1.1);
+    animation: none;
+}
+
+.warning-icon:active {
+    transform: scale(0.95);
+}
+
+/* Pulse animatie voor het waarschuwingsicoon */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 0 rgba(231, 76, 60, 0.4));
+    }
+    70% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 8px rgba(231, 76, 60, 0));
+    }
+    100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 0 rgba(231, 76, 60, 0));
+    }
+}
+
+/* Voeg een active state toe aan de warning-icon wanneer advies zichtbaar is */
+.warning-icon.active {
+    color: #c0392b;
+    animation: none;
+    transform: scale(1.1);
+}
+
+/* Voeg een hover state toe aan de category container */
+.category-container:hover .warning-icon:not(:hover) {
+    animation: none;
 } 

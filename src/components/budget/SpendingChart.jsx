@@ -3,13 +3,17 @@ import { useAuth } from '../../context/AuthContext';
 import { db } from '../../firebase-config';
 import { doc, getDoc } from 'firebase/firestore';
 import { plaidService } from '../../services/PlaidService';
+import { FaExclamationCircle } from 'react-icons/fa';
+import SmartAdvisor from './SmartAdvisor';
 import './SpendingChart.css';
 
 const SpendingChart = () => {
     const { user } = useAuth();
     const [categorySpending, setCategorySpending] = useState({});
+    const [transactions, setTransactions] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
     // Haal de categorieën en budgetten op uit localStorage
     const savedCategories = localStorage.getItem('budgetCategories');
@@ -67,24 +71,24 @@ const SpendingChart = () => {
                     return;
                 }
 
-                const { transactions } = await plaidService.getCurrentMonthTransactions(
+                const { transactions: fetchedTransactions } = await plaidService.getCurrentMonthTransactions(
                     userData.plaidAccessToken
                 );
 
+                // Sla de transacties op in state
+                setTransactions(fetchedTransactions);
+
                 // Log ruwe transacties voor debugging
-                console.log('Raw transactions:', transactions.map(t => ({
+                console.log('Raw transactions:', fetchedTransactions.map(t => ({
                     amount: t.amount,
                     category: t.personal_finance_category?.primary,
                     name: t.name
                 })));
 
                 // Groepeer transacties per categorie
-                const spendingByCategory = transactions.reduce((acc, transaction) => {
+                const spendingByCategory = fetchedTransactions.reduce((acc, transaction) => {
                     const plaidCategory = transaction.personal_finance_category?.primary || 'OTHER';
                     const mappedCategory = plaidCategoryMapping[plaidCategory] || 'Overig';
-                    
-                    // Log elke mapping voor debugging
-                    console.log(`Mapping ${plaidCategory} -> ${mappedCategory} (${transaction.amount})`);
                     
                     acc[mappedCategory] = (acc[mappedCategory] || 0) + transaction.amount;
                     return acc;
@@ -110,23 +114,52 @@ const SpendingChart = () => {
         <div className="barchart">
             {categories.map((categoryName, index) => {
                 const current = categorySpending[categoryName] || 0;
+                const budget = categoryBudgets[categoryName] || 0;
+                const isOverBudget = current > budget && budget > 0;
+
                 return (
                     <div key={index} className="category-container">
                         <div className="category-header">
-                            <span className="category-name">{categoryName}</span>
+                            <div className="category-info">
+                                <span className="category-name">{categoryName}</span>
+                                {isOverBudget && (
+                                    <button 
+                                        className={`warning-icon ${selectedCategory === categoryName ? 'active' : ''}`}
+                                        onClick={() => setSelectedCategory(
+                                            selectedCategory === categoryName ? null : categoryName
+                                        )}
+                                        title="Klik voor besparingsadvies"
+                                    >
+                                        <FaExclamationCircle />
+                                    </button>
+                                )}
+                            </div>
                             <span className="category-amounts">
-                                €{current.toLocaleString()} / €{categoryBudgets[categoryName] || 0}
+                                €{current.toLocaleString()} / €{budget}
                             </span>
                         </div>
                         <div className="bar-container">
                             <div 
                                 className="bar"
                                 style={{ 
-                                    width: `${(current / (categoryBudgets[categoryName] || 1)) * 100}%`,
-                                    backgroundColor: getBarColor(current, categoryBudgets[categoryName])
+                                    width: `${(current / (budget || 1)) * 100}%`,
+                                    backgroundColor: getBarColor(current, budget)
                                 }}
                             />
                         </div>
+                        
+                        {isOverBudget && selectedCategory === categoryName && (
+                            <div className="advisor-wrapper">
+                                <SmartAdvisor
+                                    transactions={transactions.filter(t => 
+                                        plaidCategoryMapping[t.personal_finance_category?.primary] === categoryName
+                                    )}
+                                    category={categoryName}
+                                    budget={budget}
+                                    currentSpending={current}
+                                />
+                            </div>
+                        )}
                     </div>
                 );
             })}

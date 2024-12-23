@@ -1,0 +1,103 @@
+.smart-advisor {
+    background: rgba(17, 24, 39, 0.05);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    transition: all 0.3s ease;
+}
+
+.advisor-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.advisor-icon {
+    color: #3b82f6;
+    font-size: 1.5rem;
+}
+
+.advisor-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.savings-potential {
+    background: rgba(59, 130, 246, 0.1);
+    padding: 1rem;
+    border-radius: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.savings-potential strong {
+    color: #3b82f6;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.top-spending ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.top-spending li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.ai-advice {
+    background: rgba(59, 130, 246, 0.05);
+    padding: 1rem;
+    border-radius: 0.75rem;
+}
+
+.ai-advice p {
+    line-height: 1.6;
+    color: #374151;
+}
+
+.advisor-loading {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #6b7280;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+} 
+
+.advisor-error {
+    padding: 1rem;
+    background: rgba(231, 76, 60, 0.1);
+    border-radius: 0.75rem;
+    color: #c0392b;
+}
+
+.advisor-error button {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.advisor-error button:hover {
+    background: #c0392b;
+} 
